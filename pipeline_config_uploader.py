@@ -8,11 +8,12 @@ SG_SCRIPT_NAME = os.environ.get("SG_SCRIPT_NAME")
 SG_SCRIPT_KEY = os.environ.get("SG_SCRIPT_KEY")
 
 # Constants for pipeline configuration
-CONFIG_NAME = "My Pipeline Config"
-CONFIG_DESCRIPTION = "Description of my pipeline configuration"
+CONFIG_NAME = os.environ.get("CONFIG_NAME")
+CONFIG_DESCRIPTION = os.environ.get("CONFIG_DESCRIPTION")
 ZIP_FILE_PATH = os.environ.get("ZIP_FILE_PATH")
 # List of users allowed to use the configuration
 # 2498 is the ID of the "Kei Ikeda" user for now
+# TODO: Make this configurable via GitHub Variable later
 USER_ID = 2498
 
 
