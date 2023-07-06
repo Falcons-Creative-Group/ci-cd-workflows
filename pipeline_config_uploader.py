@@ -47,20 +47,3 @@ if __name__ == "__main__":
     print("Uploading zip file to Pipeline Config (id: {})...".format(config["id"]))
     attachment_entity_id = sg.upload("PipelineConfiguration", config["id"], ZIP_FILE_PATH, field_name="uploaded_config")
     print("Attachment entity id: {}".format(attachment_entity_id))
-
-    # # Read the zip file as binary data
-    # with open(ZIP_FILE_PATH, "rb") as file:
-    #     file_contents = file.read()
-
-    # upload_data = {
-    #         "path": ZIP_FILE_PATH,
-    #         "name": os.path.basename(ZIP_FILE_PATH),
-    #         "content_type": "application/zip",
-    #         "entity_type": "PipelineConfiguration",
-    #         "entity_id": config["id"],  # Replace with the ID of the pipeline configuration entity
-    #         "field_name": "uploaded_config",  # Replace with the field name of the file field in the entity schema
-    #         "data": file_contents,
-    #     }
-
-    # sg.upload("Attachment", upload_data)
-    # print("Zip file uploaded and associated with the 'uploaded config' field.")
