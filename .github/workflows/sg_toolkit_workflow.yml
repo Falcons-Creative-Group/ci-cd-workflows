@@ -90,7 +90,7 @@ jobs:
           zip_file_name="$repo_name-${{ steps.tag_version.outputs.new_tag }}.zip"
           zip_file_path=${{ github.workspace }}/$zip_file_name
           branch_name=${{ github.ref_name }}
-          config_name="$branch_name_${{ steps.tag_version.outputs.new_tag }}"
+          config_name="$branch_name-${{ steps.tag_version.outputs.new_tag }}"
           config_description="Pipeline Config for ${{ steps.tag_version.outputs.new_tag }}"
           echo "Repository Name: $repo_name"
           echo "Authorization Header: $authorization_header"
