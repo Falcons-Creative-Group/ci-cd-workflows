@@ -24,11 +24,11 @@ jobs:
           # ref: ${{ github.sha }}
           fetch-depth: '0'  #  Required due to the way Git works, without it this action won't be able to find any or the correct tags
 
-      - name: Print out organization variables and secrets
-        run: |
-          echo ${{ vars.SG_BASE_URL }}
-          echo ${{ vars.SG_SCRIPT_NAME }}
-          echo ${{ secrets.sg-api-key }}
+      # - name: Print out organization variables and secrets
+      #   run: |
+      #     echo ${{ vars.SG_BASE_URL }}
+      #     echo ${{ vars.SG_SCRIPT_NAME }}
+      #     echo ${{ secrets.sg-api-key }}
 
       - name: 'Get Previous tag'
         id: previoustag
@@ -58,7 +58,7 @@ jobs:
           custom_tag: ${{ steps.increment_version.outputs.version }}
           tag_prefix: ''  # Ignore 'v' prefix because custom_tag has 'v' prefix alreeady
 
-      - name: Create Pre-release
+      - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -119,16 +119,16 @@ jobs:
       # - name: Download asset from ci-cd-workflows repo
       #   run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "https://api.github.com/repos/Falcons-Creative-Group/ci-cd-workflows/zipball/v0.0.1" > ci-cd-workflows-v0.0.1.zip
 
-      - name: Checkout ci-cd-workflows repo
+      - name: Checkout ci-cd-workflows repo to ci-cd-workflows folder
         uses: actions/checkout@v3
         with:
           repository: 'Falcons-Creative-Group/ci-cd-workflows'
           path: ci-cd-workflows
     
-      - name: Print Files in Workspace
-        run: |
-          cd ${{ github.workspace }}/ci-cd-workflows
-          ls -la
+      # - name: Print Files in Workspace
+      #   run: |
+      #     cd ${{ github.workspace }}/ci-cd-workflows
+      #     ls -la
 
       - name: Create SG Pipeline Config and upload zip file
         run: python pipeline_config_uploader.py
