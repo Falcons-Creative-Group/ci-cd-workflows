@@ -140,3 +140,4 @@ jobs:
           CONFIG_NAME: ${{ steps.variable_fixtures.outputs.config_name }}
           CONFIG_DESCRIPTION: ${{ steps.variable_fixtures.outputs.config_description }}
           ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
+          SG_DISABLED_USER_ID: ${{ vars.SG_DISABLED_USER_ID }}
