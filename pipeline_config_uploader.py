@@ -13,7 +13,8 @@ CONFIG_DESCRIPTION = os.environ.get("CONFIG_DESCRIPTION")
 ZIP_FILE_PATH = os.environ.get("ZIP_FILE_PATH")
 
 # Constant for user ID to add to user restriction field
-SG_DISABLED_USER_ID = os.environ.get("SG_DISABLED_USER_ID")
+# HumanUser expects ID as an integer, so we need to convert the string to an integer
+SG_DISABLED_USER_ID = int(os.environ.get("SG_DISABLED_USER_ID"))
 
 
 if __name__ == "__main__":
