@@ -89,8 +89,12 @@ jobs:
           download_url=https://api.github.com/repos/${{ github.repository }}/zipball/${{ steps.tag_version.outputs.new_tag }}
           zip_file_name="$repo_name-${{ steps.tag_version.outputs.new_tag }}.zip"
           zip_file_path=${{ github.workspace }}/$zip_file_name
-          branch_name=${{ github.ref_name }}
-          config_name="$branch_name-${{ steps.tag_version.outputs.new_tag }}"
+          if ${{ inputs.is-prerelease }}; then
+            config_name_prefix=${{ github.ref_name }}
+          else
+            config_name_prefix="primary"
+          fi
+          config_name="$config_name_prefix-${{ steps.tag_version.outputs.new_tag }}"
           echo "Repository Name: $repo_name"
           echo "Authorization Header: $authorization_header"
           echo "Download URL: $download_url"
