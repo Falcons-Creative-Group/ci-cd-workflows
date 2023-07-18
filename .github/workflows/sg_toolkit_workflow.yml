@@ -91,21 +91,17 @@ jobs:
           zip_file_path=${{ github.workspace }}/$zip_file_name
           branch_name=${{ github.ref_name }}
           config_name="$branch_name-${{ steps.tag_version.outputs.new_tag }}"
-          config_description="Pipeline Config for ${{ steps.tag_version.outputs.new_tag }}"
           echo "Repository Name: $repo_name"
           echo "Authorization Header: $authorization_header"
           echo "Download URL: $download_url"
           echo "Zip File Name: $zip_file_name"
           echo "Zip File Path: $zip_file_path"
           echo "Config Name: $config_name"
-          echo "Config Description: $config_description"
-
           echo "authorization_header=$authorization_header" >> $GITHUB_OUTPUT
           echo "download_url=$download_url" >> $GITHUB_OUTPUT
           echo "zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
           echo "zip_file_path=$zip_file_path" >> $GITHUB_OUTPUT
           echo "config_name=$config_name" >> $GITHUB_OUTPUT
-          echo "config_description=$config_description" >> $GITHUB_OUTPUT
 
       - name: Print variable fixtures
         run: |
@@ -139,6 +135,6 @@ jobs:
           SG_SCRIPT_NAME: ${{ vars.SG_SCRIPT_NAME }}
           SG_SCRIPT_KEY: ${{ secrets.sg-api-key }}
           CONFIG_NAME: ${{ steps.variable_fixtures.outputs.config_name }}
-          CONFIG_DESCRIPTION: ${{ steps.variable_fixtures.outputs.config_description }}
+          CONFIG_DESCRIPTION: ${{ steps.tag_version.outputs.changelog }}
           ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
           SG_DISABLED_USER_ID: ${{ vars.SG_DISABLED_USER_ID }}
