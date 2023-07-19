@@ -12,6 +12,11 @@ on:
         required: true
         type: boolean
         default: true
+      is-toolkit-bundle:
+        description: 'Is this for the Toolkit Bundle?'
+        required: true
+        type: boolean
+        default: false
         
 jobs:
   build:
@@ -142,3 +147,16 @@ jobs:
           CONFIG_DESCRIPTION: ${{ steps.create_release.outputs.html_url }}
           ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
           SG_DISABLED_USER_ID: ${{ vars.SG_DISABLED_USER_ID }}
+        if: ${{ inputs.is-toolkit-bundle }} == false
+
+      - name: Create Toolkit Bundle and upload zip file
+        run: python toolkit_bundle_uploader.py
+        working-directory: ${{ github.workspace }}/ci-cd-workflows
+        env:
+          SG_BASE_URL: ${{ vars.SG_BASE_URL }}
+          SG_SCRIPT_NAME: ${{ vars.SG_SCRIPT_NAME }}
+          SG_SCRIPT_KEY: ${{ secrets.sg-api-key }}
+          BUNDLE_NAME: ${{ steps.variable_fixtures.outputs.config_name }}
+          BUNDLE_DESCRIPTION: ${{ steps.create_release.outputs.html_url }}
+          ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
+        if: ${{ inputs.is-toolkit-bundle }} == true
