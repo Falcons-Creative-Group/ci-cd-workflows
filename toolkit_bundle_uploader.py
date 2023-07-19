@@ -9,7 +9,7 @@ SG_SCRIPT_KEY = os.environ.get("SG_SCRIPT_KEY")
 
 # Constants for toolkit bundle
 BUNDLE_NAME = os.environ.get("BUNDLE_NAME")
-BUNDLE_DESCRIPTION = os.environ.get("BUNDLE_DESCRIPTION")
+# BUNDLE_DESCRIPTION = os.environ.get("BUNDLE_DESCRIPTION")
 ZIP_FILE_PATH = os.environ.get("ZIP_FILE_PATH")
 
 # Toolkit Bundle entity type
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     print("SG_SCRIPT_NAME: {}".format(SG_SCRIPT_NAME))
     print("SG_SCRIPT_KEY: {}".format(SG_SCRIPT_KEY))
     print("BUNDLE_NAME: {}".format(BUNDLE_NAME))
-    print("BUNDLE_DESCRIPTION: {}".format(BUNDLE_DESCRIPTION))
+    # print("BUNDLE_DESCRIPTION: {}".format(BUNDLE_DESCRIPTION))
     print("ZIP_FILE_PATH: {}".format(ZIP_FILE_PATH))
     
     # Connect to ShotGrid
@@ -31,7 +31,7 @@ if __name__ == "__main__":
     # Create the toolkit bundle
     bundle_data = {
         "code": BUNDLE_NAME,
-        "description": BUNDLE_DESCRIPTION,
+        # "description": BUNDLE_DESCRIPTION,
     }
     bundle = sg.create(ENTITY_TYPE, bundle_data)
     print("Created toolkit bundle : {}".format(bundle))
