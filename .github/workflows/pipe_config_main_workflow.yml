@@ -16,7 +16,7 @@ on:
 jobs:
   release:
     name: Create Release
-    uses: ./.github/workflows/release.yml
+    uses: ./.github/workflows/create_release_workflow.yml
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
@@ -28,5 +28,5 @@ jobs:
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
-      release-version: ${{ needs.release.outputs.release-version }}
-      release-html-url: ${{ needs.release.outputs.release-html-url }}
+      release-version: ${{ needs.release.outputs.version }}
+      release-html-url: ${{ needs.release.outputs.html-url }}
