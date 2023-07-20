@@ -57,6 +57,6 @@ if __name__ == "__main__":
         print("Creating toolkit bundle with data: {}".format(bundle_data))
         existing_bundle = sg.create(ENTITY_TYPE, bundle_data)
 
-    # print("Uploading zip file to Toolkit Bundle (id: {})...".format(bundle["id"]))
-    # attachment_entity_id = sg.upload(ENTITY_TYPE, bundle["id"], ZIP_FILE_PATH, field_name="sg_payload")
-    # print("Attachment entity id: {}".format(attachment_entity_id))
+    print("Uploading zip file to Toolkit Bundle (id: {})...".format(existing_bundle["id"]))
+    attachment_entity_id = sg.upload(ENTITY_TYPE, existing_bundle["id"], ZIP_FILE_PATH, field_name="sg_payload")
+    print("Attachment entity id: {}".format(attachment_entity_id))
