@@ -1,14 +1,6 @@
 import os
-import logging
 
 import shotgun_api3
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    handlers=[logging.FileHandler("log.txt")]  # Add a file handler
-)
 
 # Constants for ShotGrid API connection
 SG_BASE_URL = os.environ.get("SG_BASE_URL")
@@ -26,18 +18,16 @@ ENTITY_TYPE = "CustomNonProjectEntity10"
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger(__name__)
-
-    logger.info("SG_BASE_URL: {}".format(SG_BASE_URL))
-    logger.info("SG_SCRIPT_NAME: {}".format(SG_SCRIPT_NAME))
-    logger.info("SG_SCRIPT_KEY: {}".format(SG_SCRIPT_KEY))
-    logger.info("BUNDLE_NAME: {}".format(BUNDLE_NAME))
-    # logger.info("BUNDLE_DESCRIPTION: {}".format(BUNDLE_DESCRIPTION))
-    logger.info("ZIP_FILE_PATH: {}".format(ZIP_FILE_PATH))
+    print("SG_BASE_URL: {}".format(SG_BASE_URL))
+    print("SG_SCRIPT_NAME: {}".format(SG_SCRIPT_NAME))
+    print("SG_SCRIPT_KEY: {}".format(SG_SCRIPT_KEY))
+    print("BUNDLE_NAME: {}".format(BUNDLE_NAME))
+    # print("BUNDLE_DESCRIPTION: {}".format(BUNDLE_DESCRIPTION))
+    print("ZIP_FILE_PATH: {}".format(ZIP_FILE_PATH))
     
     # Connect to ShotGrid
     sg = shotgun_api3.Shotgun(SG_BASE_URL, SG_SCRIPT_NAME, SG_SCRIPT_KEY)
-    logger.info("Connected to ShotGrid!")
+    print("Connected to ShotGrid!")
 
     # First, try to find an existing toolkit bundle entity
     filters = [
@@ -47,7 +37,7 @@ if __name__ == "__main__":
     existing_bundle = sg.find_one(ENTITY_TYPE, filters)
 
     if not existing_bundle:
-        logger.info("Toolkit bundle '{}' not found!".format(BUNDLE_NAME))
+        print("Toolkit bundle '{}' not found!".format(BUNDLE_NAME))
 
         # Create the toolkit bundle
         bundle_data = {
@@ -61,12 +51,12 @@ if __name__ == "__main__":
             bundle_data["tags"] = [existing_tag]
         else:
             # Give warning
-            logger.warning("Tag '{}' not found!".format(BUNDLE_TAG_NAME))
+            print("Tag '{}' not found!".format(BUNDLE_TAG_NAME))
         
         # Create the bundle  
-        logger.info("Creating toolkit bundle with data: {}".format(bundle_data))
+        print("Creating toolkit bundle with data: {}".format(bundle_data))
         existing_bundle = sg.create(ENTITY_TYPE, bundle_data)
 
-    # logger.info("Uploading zip file to Toolkit Bundle (id: {})...".format(bundle["id"]))
+    # print("Uploading zip file to Toolkit Bundle (id: {})...".format(bundle["id"]))
     # attachment_entity_id = sg.upload(ENTITY_TYPE, bundle["id"], ZIP_FILE_PATH, field_name="sg_payload")
-    # logger.info("Attachment entity id: {}".format(attachment_entity_id))
+    # print("Attachment entity id: {}".format(attachment_entity_id))
