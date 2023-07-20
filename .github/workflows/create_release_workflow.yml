@@ -1,9 +1,5 @@
 on:
     workflow_call:
-      secrets:
-        sg-api-key:
-          required: true
-          description: 'ShotGrid API Key'
       inputs:
         is-prerelease:
             description: 'Is this a pre-release?'
