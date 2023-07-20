@@ -31,7 +31,7 @@ on:
 jobs:
   release:
     name: Create Release
-    uses: ./.github/actions/workflows/create_release_workflow.yml@PIP-138_ci-cd-workflow-update
+    uses: ./.github/workflows/create_release_workflow.yml@PIP-138_ci-cd-workflow-update
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
   
