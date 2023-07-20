@@ -167,7 +167,7 @@ jobs:
           SG_SCRIPT_NAME: ${{ vars.SG_SCRIPT_NAME }}
           SG_SCRIPT_KEY: ${{ secrets.sg-api-key }}
           BUNDLE_NAME: ${{ github.event.repository.name }}
-          BUNDLE_DESCRIPTION: ${{ steps.create_release.outputs.html_url }}
+          BUNDLE_DESCRIPTION: ${{ inputs.bundle-description }}
           BUNDLE_TAG_NAME: ${{ inputs.bundle-type }}
           ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
         if: ${{ inputs.is-toolkit-bundle }} == true
