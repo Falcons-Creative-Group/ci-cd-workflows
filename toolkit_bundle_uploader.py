@@ -34,29 +34,31 @@ if __name__ == "__main__":
 
     # First, try to find an existing toolkit bundle entity
     filters = [
-        ["project", "is", None],  # Excludes entities tied to a project
         ["code", "is", BUNDLE_NAME]
     ]
     # Find the entity
     existing_bundle = sg.find_one(ENTITY_TYPE, filters)
 
     if not existing_bundle:
+        logger.info("Toolkit bundle '{}' not found!".format(BUNDLE_NAME))
+
+        # Create the toolkit bundle
+        bundle_data = {
+            "code": BUNDLE_NAME,
+            # "description": BUNDLE_DESCRIPTION,
+        }
+
         # Find the tag eneitty
         existing_tag = sg.find_one("Tag", [["name", "is", BUNDLE_TAG_NAME]])
-
-        if not existing_tag:
+        if existing_tag:
+            bundle_data["tags"] = [existing_tag]
+        else:
             # Give warning
             logger.warning("Tag '{}' not found!".format(BUNDLE_TAG_NAME))
         
-        else:
-            # Create the toolkit bundle
-            bundle_data = {
-                "code": BUNDLE_NAME,
-                # "description": BUNDLE_DESCRIPTION,
-                "tags": [existing_tag],
-            }
-            existing_bundle = sg.create(ENTITY_TYPE, bundle_data)
-            logger.info("Created toolkit bundle : {}".format(existing_bundle))
+        # Create the bundle  
+        logger.info("Creating toolkit bundle with data: {}".format(bundle_data))
+        existing_bundle = sg.create(ENTITY_TYPE, bundle_data)
 
     # logger.info("Uploading zip file to Toolkit Bundle (id: {})...".format(bundle["id"]))
     # attachment_entity_id = sg.upload(ENTITY_TYPE, bundle["id"], ZIP_FILE_PATH, field_name="sg_payload")
