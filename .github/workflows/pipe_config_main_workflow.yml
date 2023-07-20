@@ -2,6 +2,10 @@ name: ShotGrid Toolkit Workflow
 
 on:
   workflow_call:
+    secrets:
+      sg-api-key:
+        required: true
+        description: 'ShotGrid API Key'
     inputs:
       is-prerelease:
         description: 'Is this a pre-release?'
@@ -12,7 +16,7 @@ on:
 jobs:
   release:
     name: Create Release
-    uses: ./.github/workflows/create_release.yml
+    uses: ./.github/workflows/release.yml
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
