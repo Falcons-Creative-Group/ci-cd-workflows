@@ -29,62 +29,18 @@ on:
         default: 'Toolkit Bundle' 
         
 jobs:
-  build:
+  release:
+    name: Create Release
+    uses: Falcons-Creative-Group/ci-cd-workflows/.github/actions/workflows/create_release_workflow@PIP-138_ci-cd-workflow-update
+    with:
+      is-prerelease: ${{ inputs.is-prerelease }}
+  
+  deploy:
+    name: Deploy to ShotGrid
     runs-on: ubuntu-latest
+    needs: release
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          # ref: ${{ github.sha }}
-          fetch-depth: '0'  #  Required due to the way Git works, without it this action won't be able to find any or the correct tags
-
-      # - name: Print out organization variables and secrets
-      #   run: |
-      #     echo ${{ vars.SG_BASE_URL }}
-      #     echo ${{ vars.SG_SCRIPT_NAME }}
-      #     echo ${{ secrets.sg-api-key }}
-
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "Falcons-Creative-Group/github-action-get-previous-tag@v1"
-
-      - name: Print out previous tag
-        run: echo ${{ steps.previoustag.outputs.tag }}
-
-      - name: Bump version
-        id: increment_version
-        run: |
-          last_version=${{ steps.previoustag.outputs.tag }}
-          last_number=$(echo $last_version | awk -F. '{print $NF}')
-          next_number=$((last_number + 1))
-          new_version=$(echo $last_version | sed "s/\.[0-9]*$/.${next_number}/")
-          echo "version=$new_version" >> $GITHUB_OUTPUT
-          echo ${version}
-        
-      - name: Print out new version
-        run: echo ${{ steps.increment_version.outputs.version }}
-      
-      - name: Push tag
-        id: tag_version
-        uses: Falcons-Creative-Group/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ steps.increment_version.outputs.version }}
-          tag_prefix: ''  # Ignore 'v' prefix because custom_tag has 'v' prefix alreeady
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
-          draft: false
-          prerelease: ${{ inputs.is-prerelease }}
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -101,15 +57,15 @@ jobs:
           repository=${{ github.repository }}
           repo_name=${repository#*/}
           authorization_header="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
-          download_url=https://api.github.com/repos/${{ github.repository }}/zipball/${{ steps.tag_version.outputs.new_tag }}
-          zip_file_name="$repo_name-${{ steps.tag_version.outputs.new_tag }}.zip"
+          download_url=https://api.github.com/repos/${{ github.repository }}/zipball/${{ needs.release.outputs.version }}
+          zip_file_name="$repo_name-${{ needs.release.outputs.version }}.zip"
           zip_file_path=${{ github.workspace }}/$zip_file_name
           if ${{ inputs.is-prerelease }}; then
             config_name_prefix=${{ github.ref_name }}
           else
             config_name_prefix="primary"
           fi
-          config_name="$config_name_prefix-${{ steps.tag_version.outputs.new_tag }}"
+          config_name="$config_name_prefix-${{ needs.release.outputs.version }}"
           echo "Repository Name: $repo_name"
           echo "Authorization Header: $authorization_header"
           echo "Download URL: $download_url"
