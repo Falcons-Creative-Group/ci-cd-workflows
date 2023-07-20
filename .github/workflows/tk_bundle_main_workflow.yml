@@ -31,6 +31,12 @@ jobs:
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
   
+  test:
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - run: echo ${{ needs.release.outputs.release-version }}
+
   deploy:
     name: Deploy to ShotGrid
     needs: release
