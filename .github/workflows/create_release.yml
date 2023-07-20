@@ -10,6 +10,9 @@ on:
         version:
             description: 'The new version number'
             value: ${{ jobs.release.outputs.version }}
+        html-url:
+            description: 'The URL of the release'
+            value: ${{ jobs.release.outputs.html-url }}
 
 jobs:
     release:
@@ -17,6 +20,7 @@ jobs:
       # Map the job outputs to step outputs
       outputs:
         version: ${{ steps.tag_version.outputs.new_tag }}
+        html-url: ${{ steps.create_release.outputs.html_url }}
       steps:
         - name: Checkout code
           uses: actions/checkout@v2

@@ -1,0 +1,32 @@
+name: ShotGrid Toolkit Workflow
+
+on:
+  workflow_call:
+    secrets:
+      sg-api-key:
+        required: true
+        description: 'ShotGrid API Key'
+    inputs:
+      is-prerelease:
+        description: 'Is this a pre-release?'
+        required: true
+        type: boolean
+        default: true
+        
+jobs:
+  release:
+    name: Create Release
+    uses: ./.github/workflows/create_release.yml
+    secrets: inherit
+    with:
+      is-prerelease: ${{ inputs.is-prerelease }}
+  
+  deploy:
+    name: Deploy to ShotGrid
+    needs: release
+    uses: ./.github/workflows/pipe_config_deployment.yml
+    secrets: inherit
+    with:
+      is-prerelease: ${{ inputs.is-prerelease }}
+      release-version: ${{ needs.release.outputs.release-version }}
+      release-html-url: ${{ needs.release.outputs.release-html-url }}
