@@ -26,7 +26,7 @@ on:
 jobs:
   release:
     name: Create Release
-    uses: ./.github/workflows/create_release_workflow.yml
+    uses: ./.github/workflows/release-to-github.yml
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
@@ -34,7 +34,7 @@ jobs:
   deploy:
     name: Deploy to ShotGrid
     needs: release
-    uses: ./.github/workflows/tk_bundle_deployment.yml
+    uses: ./.github/workflows/release-to-tk-bundle.yml
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}

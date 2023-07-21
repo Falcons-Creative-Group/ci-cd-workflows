@@ -16,7 +16,7 @@ on:
 jobs:
   release:
     name: Create Release
-    uses: ./.github/workflows/create_release_workflow.yml
+    uses: ./.github/workflows/release-to-github.yml
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
@@ -24,7 +24,7 @@ jobs:
   deploy:
     name: Deploy to ShotGrid
     needs: release
-    uses: ./.github/workflows/pipe_config_deployment.yml
+    uses: ./.github/workflows/release-to-pipe-config.yml
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
