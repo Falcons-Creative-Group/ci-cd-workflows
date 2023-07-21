@@ -49,13 +49,6 @@ jobs:
           echo "zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
           echo "zip_file_path=$zip_file_path" >> $GITHUB_OUTPUT
 
-      # For debugging purposes
-      # - name: Print variable fixtures
-      #   run: |
-      #     echo ${{ steps.variable_fixtures.outputs.authorization_header }}
-      #     echo ${{ steps.variable_fixtures.outputs.download_url }}
-      #     echo ${{ steps.variable_fixtures.outputs.zip_file_name }}
-
       - name: Download Zip File from Release
         run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
 
@@ -64,7 +57,6 @@ jobs:
         with:
           repository: 'Falcons-Creative-Group/ci-cd-workflows'
           path: ci-cd-workflows
-          ref: 'PIP-138_ci-cd-workflow-update'  # TODO: Remove this before PR
 
       - name: Set up Python
         uses: actions/setup-python@v2
