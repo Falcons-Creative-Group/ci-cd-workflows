@@ -1,0 +1,43 @@
+name: ShotGrid Toolkit Workflow
+
+on:
+  workflow_call:
+    secrets:
+      sg-api-key:
+        required: true
+        description: 'ShotGrid API Key'
+    inputs:
+      is-prerelease:
+        description: 'Is this a pre-release?'
+        required: true
+        type: boolean
+        default: true
+      bundle-type:
+        description: 'Type of Toolkit Bundle, either app, framework, or engine'
+        required: false
+        type: string
+        default: 'app'
+      bundle-description:
+        description: 'Description of Toolkit Bundle'
+        required: false
+        type: string
+        default: 'Toolkit Bundle' 
+        
+jobs:
+  release:
+    name: Create Release
+    uses: ./.github/workflows/release-to-github.yml
+    secrets: inherit
+    with:
+      is-prerelease: ${{ inputs.is-prerelease }}
+            
+  deploy:
+    name: Deploy to ShotGrid
+    needs: release
+    uses: ./.github/workflows/release-to-tk-bundle.yml
+    secrets: inherit
+    with:
+      is-prerelease: ${{ inputs.is-prerelease }}
+      release-version: ${{ needs.release.outputs.version }}
+      bundle-type: ${{ inputs.bundle-type }}
+      bundle-description: ${{ inputs.bundle-description }}

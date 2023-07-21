@@ -11,10 +11,10 @@ SG_SCRIPT_KEY = os.environ.get("SG_SCRIPT_KEY")
 CONFIG_NAME = os.environ.get("CONFIG_NAME")
 CONFIG_DESCRIPTION = os.environ.get("CONFIG_DESCRIPTION")
 ZIP_FILE_PATH = os.environ.get("ZIP_FILE_PATH")
-# List of users allowed to use the configuration
-# 2498 is the ID of the "Kei Ikeda" user for now
-# TODO: Make this configurable via GitHub Variable later
-USER_ID = 2498
+
+# Constant for user ID to add to user restriction field
+# HumanUser expects ID as an integer, so we need to convert the string to an integer
+SG_DISABLED_USER_ID = int(os.environ.get("SG_DISABLED_USER_ID"))
 
 
 if __name__ == "__main__":
@@ -24,13 +24,14 @@ if __name__ == "__main__":
     print("CONFIG_NAME: {}".format(CONFIG_NAME))
     print("CONFIG_DESCRIPTION: {}".format(CONFIG_DESCRIPTION))
     print("ZIP_FILE_PATH: {}".format(ZIP_FILE_PATH))
+    print("SG_DISABLED_USER_ID: {}".format(SG_DISABLED_USER_ID))
     
     # Connect to ShotGrid
     sg = shotgun_api3.Shotgun(SG_BASE_URL, SG_SCRIPT_NAME, SG_SCRIPT_KEY)
     print("Connected to ShotGrid!")
 
     # Get the user information
-    user = sg.find_one("HumanUser", [["id", "is", USER_ID]], ["login"])
+    user = sg.find_one("HumanUser", [["id", "is", SG_DISABLED_USER_ID]], ["login"])
     print("User: {}".format(user))
     if not user:
         raise Exception("User not found!")
