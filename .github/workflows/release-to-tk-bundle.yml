@@ -35,22 +35,13 @@ jobs:
         run: |
           repository=${{ github.repository }}
           repo_name=${repository#*/}
-          authorization_header="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
-          download_url=https://api.github.com/repos/${{ github.repository }}/zipball/${{ inputs.release-version }}
-          zip_file_name="$repo_name-${{ inputs.release-version }}.zip"
+          zip_file_name=${{ inputs.file-name }} if ${{ inputs.file-name }} != '' else '$repo_name-${{ inputs.release-version }}.zip'
           zip_file_path=${{ github.workspace }}/$zip_file_name
           echo "Repository Name: $repo_name"
-          echo "Authorization Header: $authorization_header"
-          echo "Download URL: $download_url"
           echo "Zip File Name: $zip_file_name"
           echo "Zip File Path: $zip_file_path"
-          echo "authorization_header=$authorization_header" >> $GITHUB_OUTPUT
-          echo "download_url=$download_url" >> $GITHUB_OUTPUT
           echo "zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
           echo "zip_file_path=$zip_file_path" >> $GITHUB_OUTPUT
-
-      # - name: Download Zip File from Release
-      #   run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
       
       - name: Print out the inputs file name
         run: echo ${{ inputs.file-name }}
@@ -61,17 +52,11 @@ jobs:
           tag: ${{ inputs.release-version }}
           fileName: ${{ inputs.file-name }}
           zipBall: true
-          out-file-path: "artifacts"  # Relative path under $GITHUB_WORKSPACE to place the downloaded file(s)
           
       - name: List files
         run: |
           ls -la
-        working-directory: ${{ github.workspace }}/artifacts
-        
-      # - name: Rename downloaded zip file
-      #   run: |
-      #     mv ${{ inputs.file-name }} ${{ steps.variable_fixtures.outputs.zip_file_name }}
-      #   working-directory: ${{ github.workspace }}/artifacts
+        working-directory: ${{ github.workspace }}
 
       - name: Checkout ci-cd-workflows repo to ci-cd-workflows folder
         uses: actions/checkout@v3

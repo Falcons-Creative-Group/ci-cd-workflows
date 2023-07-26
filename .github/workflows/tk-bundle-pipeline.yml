@@ -38,6 +38,5 @@ jobs:
     secrets: inherit
     with:
       release-version: ${{ needs.release.outputs.version }}
-      file-name: "${{ needs.release.outputs.version }}.zip"
       bundle-type: ${{ inputs.bundle-type }}
       bundle-description: ${{ inputs.bundle-description }}
