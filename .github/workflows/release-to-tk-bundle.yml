@@ -35,7 +35,7 @@ jobs:
         run: |
           repository=${{ github.repository }}
           repo_name=${repository#*/}
-          zip_file_name = "$repo_name-${{ inputs.release-version }}.zip"
+          zip_file_name="$repo_name-${{ inputs.release-version }}.zip"
           if [ -n "${{ inputs.file-name }}" ]; then
             zip_file_name="${{ inputs.file-name }}"
           fi
