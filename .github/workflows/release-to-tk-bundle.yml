@@ -2,6 +2,10 @@
 
 on:
     workflow_call:
+      secrets:
+        sg-api-key:
+          required: true
+          description: 'ShotGrid API Key'
       inputs:
         release-version:
             description: 'Release version'
