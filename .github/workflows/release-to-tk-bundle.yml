@@ -52,6 +52,9 @@ jobs:
       # - name: Download Zip File from Release
       #   run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
       
+      - name: Print out the inputs file name
+        run: echo ${{ inputs.file-name }}
+     
       - name: Download a release
         uses: robinraju/release-downloader@v1.8
         with:
