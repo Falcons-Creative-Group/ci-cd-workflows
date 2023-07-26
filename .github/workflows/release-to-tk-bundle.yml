@@ -3,16 +3,16 @@
 on:
     workflow_call:
       inputs:
-        is-prerelease:
-            description: 'Is this a pre-release?'
-            required: true
-            type: boolean
-            default: true
         release-version:
             description: 'Release version'
             required: true
             type: string
             default: 'v0.0.1'
+        file-name:
+            description: 'The name of the file to download from the release.'
+            required: true
+            type: string
+            default: '*.zip'
         bundle-type:
             description: 'Type of Toolkit Bundle, either app, framework, or engine'
             required: false
@@ -49,8 +49,25 @@ jobs:
           echo "zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
           echo "zip_file_path=$zip_file_path" >> $GITHUB_OUTPUT
 
-      - name: Download Zip File from Release
-        run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
+      # - name: Download Zip File from Release
+      #   run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
+      
+      - name: Download a release
+        uses: robinraju/release-downloader@v1.8
+        with:
+          tag: ${{ inputs.release-version }}
+          fileName: ${{ inputs.file-name }}
+          out-file-path: "artifacts"  # Relative path under $GITHUB_WORKSPACE to place the downloaded file(s)
+          
+      - name: List files
+        run: |
+          ls -la
+        working-directory: ${{ github.workspace }}/artifacts
+        
+      # - name: Rename downloaded zip file
+      #   run: |
+      #     mv ${{ inputs.file-name }} ${{ steps.variable_fixtures.outputs.zip_file_name }}
+      #   working-directory: ${{ github.workspace }}/artifacts
 
       - name: Checkout ci-cd-workflows repo to ci-cd-workflows folder
         uses: actions/checkout@v3
@@ -68,14 +85,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install git+https://github.com/shotgunsoftware/python-api.git
 
-      - name: Create Toolkit Bundle and upload zip file
-        run: python toolkit_bundle_uploader.py
-        working-directory: ${{ github.workspace }}/ci-cd-workflows
-        env:
-          SG_BASE_URL: ${{ vars.SG_BASE_URL }}
-          SG_SCRIPT_NAME: ${{ vars.SG_SCRIPT_NAME }}
-          SG_SCRIPT_KEY: ${{ secrets.sg-api-key }}
-          BUNDLE_NAME: ${{ github.event.repository.name }}
-          BUNDLE_DESCRIPTION: ${{ inputs.bundle-description }}
-          BUNDLE_TAG_NAME: ${{ inputs.bundle-type }}
-          ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
+      # - name: Create Toolkit Bundle and upload zip file
+      #   run: python toolkit_bundle_uploader.py
+      #   working-directory: ${{ github.workspace }}/ci-cd-workflows
+      #   env:
+      #     SG_BASE_URL: ${{ vars.SG_BASE_URL }}
+      #     SG_SCRIPT_NAME: ${{ vars.SG_SCRIPT_NAME }}
+      #     SG_SCRIPT_KEY: ${{ secrets.sg-api-key }}
+      #     BUNDLE_NAME: ${{ github.event.repository.name }}
+      #     BUNDLE_DESCRIPTION: ${{ inputs.bundle-description }}
+      #     BUNDLE_TAG_NAME: ${{ inputs.bundle-type }}
+      #     ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
