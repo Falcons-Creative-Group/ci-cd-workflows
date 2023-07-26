@@ -37,7 +37,6 @@ jobs:
     uses: ./.github/workflows/release-to-tk-bundle.yml
     secrets: inherit
     with:
-      is-prerelease: ${{ inputs.is-prerelease }}
       release-version: ${{ needs.release.outputs.version }}
       bundle-type: ${{ inputs.bundle-type }}
       bundle-description: ${{ inputs.bundle-description }}
