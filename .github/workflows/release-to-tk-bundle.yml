@@ -77,14 +77,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install git+https://github.com/shotgunsoftware/python-api.git
 
-      # - name: Create Toolkit Bundle and upload zip file
-      #   run: python toolkit_bundle_uploader.py
-      #   working-directory: ${{ github.workspace }}/ci-cd-workflows
-      #   env:
-      #     SG_BASE_URL: ${{ vars.SG_BASE_URL }}
-      #     SG_SCRIPT_NAME: ${{ vars.SG_SCRIPT_NAME }}
-      #     SG_SCRIPT_KEY: ${{ secrets.sg-api-key }}
-      #     BUNDLE_NAME: ${{ github.event.repository.name }}
-      #     BUNDLE_DESCRIPTION: ${{ inputs.bundle-description }}
-      #     BUNDLE_TAG_NAME: ${{ inputs.bundle-type }}
-      #     ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
+      - name: Create Toolkit Bundle and upload zip file
+        run: python toolkit_bundle_uploader.py
+        working-directory: ${{ github.workspace }}/ci-cd-workflows
+        env:
+          SG_BASE_URL: ${{ vars.SG_BASE_URL }}
+          SG_SCRIPT_NAME: ${{ vars.SG_SCRIPT_NAME }}
+          SG_SCRIPT_KEY: ${{ secrets.sg-api-key }}
+          BUNDLE_NAME: ${{ github.event.repository.name }}
+          BUNDLE_DESCRIPTION: ${{ inputs.bundle-description }}
+          BUNDLE_TAG_NAME: ${{ inputs.bundle-type }}
+          ZIP_FILE_PATH: ${{ steps.variable_fixtures.outputs.zip_file_path }}
