@@ -2,6 +2,12 @@ name: Prerelease Check
 
 on:
   workflow_call:
+    inputs:
+      default-branch:
+        type: string
+        description: 'The default branch of the repository'
+        required: true
+        default: 'main'
     outputs:
       is-prerelease:
         description: 'Is this a prerelease?'
@@ -19,7 +25,7 @@ jobs:
       - name: Determine if this is a prerelease
         id: determine-is-prerelease
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/master" && "${{ github.event_name }}" == "push" ]]; then
+          if [[ "${{ github.ref }}" == "refs/heads/${{ inputs.default-branch }}" && "${{ github.event_name }}" == "push" ]]; then
             echo "is-prerelease=false" >> $GITHUB_OUTPUT
           else
             echo "is-prerelease=true" >> $GITHUB_OUTPUT
