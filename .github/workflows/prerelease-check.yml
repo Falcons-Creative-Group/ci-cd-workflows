@@ -6,7 +6,7 @@ on:
       default-branch:
         type: string
         description: 'The default branch of the repository'
-        required: true
+        required: false
         default: 'main'
     outputs:
       is-prerelease:
