@@ -5,10 +5,10 @@ on:
     outputs:
       is-prerelease:
         description: 'Is this a prerelease?'
-        value: ${{ github.event.outputs.is-prerelease }}
+        value: ${{ jobs.check-prerelease.outputs.is-prerelease }}
         
 jobs:
-  is-prerelease:
+  check-prerelease:
     name: Determine if this is a prerelease
     runs-on: ubuntu-latest
     outputs:
