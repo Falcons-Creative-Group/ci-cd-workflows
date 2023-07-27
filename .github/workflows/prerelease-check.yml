@@ -1,0 +1,26 @@
+name: Prerelease Check
+
+on:
+  workflow_call:
+    outputs:
+      is-prerelease:
+        description: 'Is this a prerelease?'
+        value: ${{ github.event.outputs.is-prerelease }}
+        
+jobs:
+  is-prerelease:
+    name: Determine if this is a prerelease
+    runs-on: ubuntu-latest
+    outputs:
+      is-prerelease: ${{ steps.determine-is-prerelease.outputs.is-prerelease }}
+    # if something is pushed to master branch, then this is not a prerelease 
+    # Otherwise, this is a prerelease.
+    steps:
+      - name: Determine if this is a prerelease
+        id: determine-is-prerelease
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/master" && "${{ github.event_name }}" == "push" ]]; then
+            echo "is-prerelease=false" >> $GITHUB_OUTPUT
+          else
+            echo "is-prerelease=true" >> $GITHUB_OUTPUT
+          fi
