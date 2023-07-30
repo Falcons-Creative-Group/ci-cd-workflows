@@ -23,7 +23,7 @@ jobs:
       - name: Print default branch
         id: print-default-branch
         run: |
-          echo "default-branch=${{ github.event.inputs.default-branch }}"
+          echo "default-branch=${{ github.event.repository.default-branch }}"
           echo "branch=${{ github.ref }}"
 
   check-prerelease:
