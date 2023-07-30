@@ -14,6 +14,18 @@ on:
         value: ${{ jobs.check-prerelease.outputs.is-prerelease }}
         
 jobs:
+  print-default-branch:
+    name: Print default branch
+    runs-on: ubuntu-latest
+    outputs:
+      default-branch: ${{ steps.print-default-branch.outputs.default-branch }}
+    steps:
+      - name: Print default branch
+        id: print-default-branch
+        run: |
+          echo "default-branch=${{ github.event.inputs.default-branch }}" >> $GITHUB_OUTPUT
+          echo "branch=${{ github.ref }}" >> $GITHUB_OUTPUT
+
   check-prerelease:
     name: Determine if this is a prerelease
     runs-on: ubuntu-latest
