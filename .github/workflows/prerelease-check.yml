@@ -23,8 +23,8 @@ jobs:
       - name: Print default branch
         id: print-default-branch
         run: |
-          echo "default-branch=${{ github.event.inputs.default-branch }}" >> $GITHUB_OUTPUT
-          echo "branch=${{ github.ref }}" >> $GITHUB_OUTPUT
+          echo "default-branch=${{ github.event.inputs.default-branch }}"
+          echo "branch=${{ github.ref }}"
 
   check-prerelease:
     name: Determine if this is a prerelease
@@ -42,3 +42,12 @@ jobs:
           else
             echo "is-prerelease=true" >> $GITHUB_OUTPUT
           fi
+
+  print-is-prerelease:
+    name: Print is prerelease
+    runs-on: ubuntu-latest
+    needs: [print-default-branch, check-prerelease]
+    steps:
+      - name: Print is prerelease
+        run: |
+          echo "is-prerelease=${{ needs.check-prerelease.outputs.is-prerelease }}"
