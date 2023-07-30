@@ -31,6 +31,7 @@ jobs:
             echo "is-prerelease=true" >> $GITHUB_OUTPUT
           fi
       
+      # Leave this step in for debugging purposes
       - name: Print variables
         run: |
           echo "github.ref=${{ github.ref }}"
