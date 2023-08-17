@@ -34,16 +34,13 @@ jobs:
   
         - name: Print out previous tag
           run: echo ${{ steps.previoustag.outputs.tag }}
-  
-        - name: Bump version
+
+        - name: Bump version 
           id: increment_version
-          run: |
-            last_version=${{ steps.previoustag.outputs.tag }}
-            last_number=$(echo $last_version | awk -F. '{print $NF}')
-            next_number=$((last_number + 1))
-            new_version=$(echo $last_version | sed "s/\.[0-9]*$/.${next_number}/")
-            echo "version=$new_version" >> $GITHUB_OUTPUT
-            echo ${version}
+          uses: Falcons-Creative-Group/sgtk-version-increment-action@v2
+          with:
+            tag: ${{ steps.previoustag.outputs.tag }} 
+            base-version: ${{ vars.BASE_VERSION }}
           
         - name: Print out new version
           run: echo ${{ steps.increment_version.outputs.version }}
