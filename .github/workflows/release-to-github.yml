@@ -37,7 +37,7 @@ jobs:
 
         - name: Bump version 
           id: increment_version
-          uses: Falcons-Creative-Group/sgtk-version-increment-action@v2
+          uses: Falcons-Creative-Group/sgtk-version-increment-action@v3
           with:
             tag: ${{ steps.previoustag.outputs.tag }} 
             base-version: ${{ vars.BASE_VERSION }}
