@@ -31,6 +31,8 @@ jobs:
         - name: 'Get Previous tag'
           id: previoustag
           uses: "Falcons-Creative-Group/github-action-get-previous-tag@v1"
+          with:
+            fallback: ${{ vars.BASE_VERSION }} # Optional fallback tag to use when no tag can be found
   
         - name: Print out previous tag
           run: echo ${{ steps.previoustag.outputs.tag }}
