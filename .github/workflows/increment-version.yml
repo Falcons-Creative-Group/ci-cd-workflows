@@ -1,0 +1,46 @@
+on:
+  workflow_call:
+    inputs:
+      use-base-version:
+          description: 'Whether to use the base version or not'
+          required: false
+          type: boolean
+          default: false
+    outputs:
+      version:
+          description: 'The new version number'
+          value: ${{ jobs.increment-version.outputs.version }}
+
+jobs:
+  increment-version:
+    runs-on: ubuntu-latest
+    # Map the job outputs to step outputs
+    outputs:
+      version: ${{ steps.set_job_output.outputs.version }}
+
+    steps:
+      - name: Increment version with base version
+        if:  ${{ inputs.use-base-version == 'true' }}
+        id: increment_version_with_base
+        uses: ./.github/workflows/sgtk-version-increment.yml
+
+      - name: Increment version
+        if:  ${{ inputs.use-base-version == 'false' }}
+        id: increment_version
+        uses: Falcons-Creative-Group/version-increment@2023.10.2
+        with:
+          scheme: semver
+          increment: patch
+
+      - name: Set job output
+        id: set_job_output
+        run: |
+          if ${{ inputs.use-base-version }}; then
+            echo "version=${{ steps.increment_version_with_base.outputs.version }}" >> $GITHUB_ENV
+            echo "::set-output name=version::${{ steps.increment_version_with_base.outputs.version }}"
+          else
+            echo "version=${{ steps.increment_version.outputs.version }}" >> $GITHUB_ENV
+            echo "::set-output name=version::${{ steps.increment_version.outputs.version }}"
+
+      - name: Print version
+        run: echo "version=${{ steps.set_job_output.outputs.version }}"

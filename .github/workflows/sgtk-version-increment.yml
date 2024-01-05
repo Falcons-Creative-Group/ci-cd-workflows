@@ -1,0 +1,37 @@
+# ShotGrid way of versioning
+on:
+    workflow_call:
+      outputs:
+        version:
+            description: 'The new version number'
+            value: ${{ jobs.increment-version.outputs.version }}
+
+jobs:
+    increment-version:
+      runs-on: ubuntu-latest
+      # Map the job outputs to step outputs
+      outputs:
+        version: ${{ steps.increment_version.outputs.version }}
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+          with:
+            # ref: ${{ github.sha }}
+            fetch-depth: '0'  #  Required due to the way Git works, without it this action won't be able to find any or the correct tags
+
+        - name: 'Get Previous tag'
+          id: previoustag
+          uses: "Falcons-Creative-Group/github-action-get-previous-tag@v1"
+          with:
+            fallback: ${{ vars.BASE_VERSION }}  #  If no previous tag is found, use this as the fallback
+
+        - name: Print out previous tag
+          run: echo ${{ steps.previoustag.outputs.tag }}
+
+        - name: Bump version with based version
+          id: increment_version
+          uses: Falcons-Creative-Group/sgtk-version-increment-action@v3
+          with:
+              tag: ${{ steps.previoustag.outputs.tag }}
+              base-version: ${{ vars.BASE_VERSION }}

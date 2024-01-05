@@ -21,8 +21,13 @@ on:
         description: 'Description of Toolkit Bundle'
         required: false
         type: string
-        default: 'Toolkit Bundle' 
-        
+        default: 'Toolkit Bundle'
+      use-base-version:
+        description: 'Whether to use the base version or not'
+        required: false
+        type: boolean
+        default: false
+
 jobs:
   release:
     name: Create Release
@@ -30,7 +35,8 @@ jobs:
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
-            
+      use-base-version: ${{ inputs.use-base-version }}
+
   deploy:
     name: Deploy to ShotGrid
     needs: release
