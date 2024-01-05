@@ -27,12 +27,6 @@ jobs:
         version: ${{ steps.tag_version.outputs.new_tag }}
         html-url: ${{ steps.create_release.outputs.html_url }}
       steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-          with:
-            # ref: ${{ github.sha }}
-            fetch-depth: '0'  #  Required due to the way Git works, without it this action won't be able to find any or the correct tags
-
         - name: Increment version
           id: increment_version
           uses: ./.github/workflows/increment-version.yml
@@ -41,6 +35,12 @@ jobs:
 
         - name: Print out new version
           run: echo ${{ steps.increment_version.outputs.version }}
+
+        - name: Checkout code
+          uses: actions/checkout@v2
+          with:
+            # ref: ${{ github.sha }}
+            fetch-depth: '0'  #  Required due to the way Git works, without it this action won't be able to find any or the correct tags
 
         - name: Push tag
           id: tag_version
