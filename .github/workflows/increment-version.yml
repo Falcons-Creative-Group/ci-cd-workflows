@@ -19,6 +19,12 @@ jobs:
       version: ${{ steps.set_job_output.outputs.version }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          # Ensure to fetch the whole repository if your action is in another branch
+          fetch-depth: '0'
+
       - name: Increment version with base version
         if:  ${{ inputs.use-base-version == 'true' }}
         id: increment_version_with_base
