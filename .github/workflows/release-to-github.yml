@@ -27,26 +27,26 @@ jobs:
           with:
             # ref: ${{ github.sha }}
             fetch-depth: '0'  #  Required due to the way Git works, without it this action won't be able to find any or the correct tags
-  
+
         - name: 'Get Previous tag'
           id: previoustag
           uses: "Falcons-Creative-Group/github-action-get-previous-tag@v1"
           with:
             fallback: ${{ vars.BASE_VERSION }} # Optional fallback tag to use when no tag can be found
-  
+
         - name: Print out previous tag
           run: echo ${{ steps.previoustag.outputs.tag }}
 
-        - name: Bump version 
+        - name: Bump version
           id: increment_version
-          uses: Falcons-Creative-Group/sgtk-version-increment-action@v3
+          uses: Falcons-Creative-Group/sgtk-version-increment-action@v4
           with:
-            tag: ${{ steps.previoustag.outputs.tag }} 
+            tag: ${{ steps.previoustag.outputs.tag }}
             base-version: ${{ vars.BASE_VERSION }}
-          
+
         - name: Print out new version
           run: echo ${{ steps.increment_version.outputs.version }}
-        
+
         - name: Push tag
           id: tag_version
           uses: Falcons-Creative-Group/github-tag-action@v6.1
@@ -54,7 +54,7 @@ jobs:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             custom_tag: ${{ steps.increment_version.outputs.version }}
             tag_prefix: ''  # Ignore 'v' prefix because custom_tag has 'v' prefix alreeady
-  
+
         - name: Create GitHub Release
           id: create_release
           uses: actions/create-release@v1
