@@ -1,0 +1,22 @@
+name: Format Version Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  format-version:
+    name: Format Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read Release Date from version.json
+        id: release-date
+        run: |
+          echo "RELEASE_DATE=$(jq -r '.release_date' version.json)" >> $GITHUB_ENV
+
+      - name: Print Release Date
+        run: |
+          echo "Release Date: $RELEASE_DATE"
+
