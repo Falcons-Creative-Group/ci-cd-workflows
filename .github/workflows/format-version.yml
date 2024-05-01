@@ -2,6 +2,15 @@ name: Format Version Workflow
 
 on:
   workflow_call:
+    inputs:
+      sub-repo:
+        type: string
+        description: 'The sub-repo to format the version for'
+        required: false
+    # outputs:
+    #   formatted-version:
+    #     description: 'The formatted version'
+    #     value: ${{ steps.format-version.outputs.formatted-version }}
 
 jobs:
   format-version:
@@ -22,3 +31,11 @@ jobs:
           echo "YEAR=$YEAR"
           echo "MONTH=$MONTH"
 
+      - name: Print sub-repo
+        run: |
+          echo "Sub-repo: ${{ inputs.sub-repo }}"
+
+      # - name: Format version
+      #   id: format-version
+      #   run: |
+      #     echo "formatted-version=v$YEAR.$MONTH" >> $GITHUB_OUTPUT
