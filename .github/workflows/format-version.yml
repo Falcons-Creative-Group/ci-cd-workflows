@@ -7,6 +7,10 @@ on:
         type: string
         description: 'The sub-repo to format the version for'
         required: false
+      sub-repo-version:
+        type: string
+        description: 'The version of the sub-repo'
+        required: false
     # outputs:
     #   formatted-version:
     #     description: 'The formatted version'
@@ -34,6 +38,7 @@ jobs:
       - name: Print sub-repo
         run: |
           echo "Sub-repo: ${{ inputs.sub-repo }}"
+          echo "Sub-repo version: ${{ inputs.sub-repo-version }}"
 
       # - name: Format version
       #   id: format-version
