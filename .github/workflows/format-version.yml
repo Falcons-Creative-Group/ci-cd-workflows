@@ -11,12 +11,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Read Release Date from version.json
-        id: release-date
+      - name: Read version.json and set environment variables
+        id: read-version
         run: |
-          echo "RELEASE_DATE=$(jq -r '.release_date' version.json)" >> $GITHUB_ENV
+          echo "YEAR=$(jq -r '.year' version.json)" >> $GITHUB_ENV
+          echo "MONTH=$(jq -r '.month' version.json)" >> $GITHUB_ENV
 
-      - name: Print Release Date
+      - name: Print version
         run: |
-          echo "Release Date: $RELEASE_DATE"
+          echo "YEAR=$YEAR"
+          echo "MONTH=$MONTH"
 
