@@ -20,6 +20,11 @@ on:
             required: true
             type: string
             default: ''
+        prepend-repo-name:
+            description: 'Prepend the repository name to the zip file name'
+            required: false
+            type: boolean
+            default: false
 
 jobs:
   deploy:
@@ -34,7 +39,11 @@ jobs:
           repo_name=${repository#*/}
           authorization_header="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
           download_url=https://api.github.com/repos/${{ github.repository }}/zipball/${{ inputs.release-version }}
-          zip_file_name="$repo_name-${{ inputs.release-version }}.zip"
+          if ${{ inputs.prepend-repo-name }}; then
+            zip_file_name="$repo_name-${{ inputs.release-version }}.zip"
+          else
+            zip_file_name="${{ inputs.release-version }}.zip"
+          fi
           zip_file_path=${{ github.workspace }}/$zip_file_name
           if ${{ inputs.is-prerelease }}; then
             config_name_prefix=${{ github.ref_name }}

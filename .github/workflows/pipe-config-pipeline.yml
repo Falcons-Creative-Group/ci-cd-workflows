@@ -12,7 +12,7 @@ on:
         required: true
         type: boolean
         default: true
-        
+
 jobs:
   release:
     name: Create Release
@@ -20,7 +20,7 @@ jobs:
     secrets: inherit
     with:
       is-prerelease: ${{ inputs.is-prerelease }}
-  
+
   deploy:
     name: Deploy to ShotGrid
     needs: release
@@ -30,3 +30,4 @@ jobs:
       is-prerelease: ${{ inputs.is-prerelease }}
       release-version: ${{ needs.release.outputs.version }}
       release-html-url: ${{ needs.release.outputs.html-url }}
+      prepend-repo-name: true
