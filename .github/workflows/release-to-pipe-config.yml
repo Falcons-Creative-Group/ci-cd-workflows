@@ -38,7 +38,7 @@ jobs:
           repository=${{ github.repository }}
           repo_name=${repository#*/}
           authorization_header="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
-          download_url=https://api.github.com/repos/${{ github.repository }}/zipball/${{ inputs.release-version }}
+          download_url=https://github.com/${{ github.repository_owner }}/${{ github.repository }}/archive/refs/tags/${{ inputs.release-version }}/${{ inputs.release-version }}.zip
           if ${{ inputs.prepend-repo-name }}; then
             zip_file_name="$repo_name-${{ inputs.release-version }}.zip"
           else
@@ -64,9 +64,7 @@ jobs:
           echo "config_name=$config_name" >> $GITHUB_OUTPUT
 
       - name: Download Zip File from Release
-        run: |
-          curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
-          ls -a
+        run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
 
       - name: Checkout ci-cd-workflows repo to ci-cd-workflows folder
         uses: actions/checkout@v3
