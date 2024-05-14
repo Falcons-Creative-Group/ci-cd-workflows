@@ -38,7 +38,7 @@ jobs:
           repository=${{ github.repository }}
           repo_name=${repository#*/}
           authorization_header="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
-          download_url=https://github.com/${{ github.repository_owner }}/${{ github.repository }}/archive/refs/tags/${{ inputs.release-version }}/${{ inputs.release-version }}.zip
+          download_url=https://github.com/${{ github.repository }}/archive/refs/tags/${{ inputs.release-version }}/${{ inputs.release-version }}.zip
           if ${{ inputs.prepend-repo-name }}; then
             zip_file_name="$repo_name-${{ inputs.release-version }}.zip"
           else
