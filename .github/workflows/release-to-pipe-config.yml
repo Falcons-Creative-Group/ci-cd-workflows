@@ -64,7 +64,9 @@ jobs:
           echo "config_name=$config_name" >> $GITHUB_OUTPUT
 
       - name: Download Zip File from Release
-        run: curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
+        run: |
+          curl -H "${{ steps.variable_fixtures.outputs.authorization_header }}" -L "${{ steps.variable_fixtures.outputs.download_url }}" > ${{ steps.variable_fixtures.outputs.zip_file_name }}
+          ls -a
 
       - name: Checkout ci-cd-workflows repo to ci-cd-workflows folder
         uses: actions/checkout@v3
